@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cwhy1nibwjtjm"]
 
 [ext_resource type="Script" uid="uid://bgn3a2ruui7yl" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="PackedScene" uid="uid://bm17qaw1kxkh1" path="res://assets/assets-pack-1/Sword.glb" id="2_g2els"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g2els"]
 
@@ -17,3 +18,9 @@ shape = SubResource("CapsuleShape3D_qhqgy")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1778046273]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.039306596, 0.6447367, 1.1920929e-07)
+
+[node name="SwordPoint" type="Node3D" parent="Camera3D" unique_id=1013551116]
+transform = Transform3D(0.099553026, -0.0028218245, -0.009012857, 0.0022524684, 0.09977226, -0.006357592, 0.009171737, 0.0061261626, 0.09938991, 0.0015522838, 0, -0.014669709)
+
+[node name="Sword" parent="Camera3D/SwordPoint" unique_id=416912283 instance=ExtResource("2_g2els")]
+transform = Transform3D(-0.092239425, -0.09397954, -0.78908795, -0.26290983, -0.74604154, 0.119585246, -0.7499136, 0.2731118, 0.055132754, 0.63688767, -0.12472755, -0.6)
