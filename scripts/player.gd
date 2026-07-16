@@ -3,11 +3,30 @@ extends CharacterBody3D
 
 const SPEED = 10.0
 const JUMP_VELOCITY = 5.0
-
 var sensivity = 0.003
+var oncooldown = false
+
+var gold = 0
+var hp = 50
+var MaxHp = 50
+
+@onready var hp_bar: TextureProgressBar = $HUD/HpBar
+@onready var gold_label: Label = $HUD/GoldLabel
 @onready var camera_3d: Camera3D = $Camera3D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var cooldown: Timer = $cooldown
+
+func player():
+	pass
+
+func attack():
+	if Input.is_action_just_pressed("attack") and oncooldown == false:
+		animation_player.play("swing")
+		oncooldown = true
+		cooldown.start()
 
 func _ready() -> void:
+	hp_bar.max_value = 50
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -16,7 +35,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera_3d.rotate_x(-event.relative.y * sensivity)
 		camera_3d.rotation.x = clamp(camera_3d.rotation.x, deg_to_rad(-60), deg_to_rad(70))
 
+func update_HUD():
+	hp_bar.value = hp
+	gold_label.text = str(gold)
+
 func _process(_delta: float) -> void:
+	update_HUD()
+	attack()
 	if Input.is_action_just_pressed("escape"):
 		get_tree().quit()
 
@@ -39,3 +64,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+
+func _on_cooldown_timeout() -> void:
+	oncooldown = false
