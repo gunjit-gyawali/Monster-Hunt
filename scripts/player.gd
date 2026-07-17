@@ -9,6 +9,8 @@ var oncooldown = false
 var gold = 0
 var hp = 50
 var MaxHp = 50
+var damage = 10
+var target = []
 
 @onready var hp_bar: TextureProgressBar = $HUD/HpBar
 @onready var gold_label: Label = $HUD/GoldLabel
@@ -25,6 +27,10 @@ func attack():
 		oncooldown = true
 		cooldown.start()
 
+func deal_damage():
+	for enimes in target:
+		enimes.hp -= damage
+	
 func _ready() -> void:
 	hp_bar.max_value = 50
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -65,6 +71,15 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-
 func _on_cooldown_timeout() -> void:
 	oncooldown = false
+
+
+func _on_attack_zone_body_entered(body: Node3D) -> void:
+	if body.has_method("enemy"):
+		target.append(body)
+
+
+func _on_attack_zone_body_exited(body: Node3D) -> void:
+	if body.has_method("enemy"):
+		target.erase(body)
